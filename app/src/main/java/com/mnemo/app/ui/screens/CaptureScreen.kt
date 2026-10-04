@@ -2,7 +2,6 @@ package com.mnemo.app.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -35,13 +33,12 @@ import androidx.compose.ui.unit.sp
 import com.mnemo.app.domain.model.MemoryType
 import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.theme.BorderGlass
+import com.mnemo.app.ui.theme.CardBackgroundGlass
 import com.mnemo.app.ui.theme.ElectricViolet
 import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MidnightBackground
 import com.mnemo.app.ui.theme.MintEmerald
 import com.mnemo.app.ui.theme.SoftBlue
-import com.mnemo.app.ui.theme.SurfaceGlass
-import com.mnemo.app.ui.theme.SurfaceVariantDark
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -52,7 +49,7 @@ fun CaptureScreen(
     var titleText by remember { mutableStateOf("") }
     var contentText by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf(MemoryType.NOTE) }
-    var tagsText by remember { mutableStateOf("general, memory") }
+    var tagsText by remember { mutableStateOf("personal, memory") }
     var isUnderstanding by remember { mutableStateOf(false) }
 
     LazyColumn(
@@ -60,34 +57,35 @@ fun CaptureScreen(
             .fillMaxSize()
             .background(MidnightBackground)
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         // Header
         item {
-            Column(modifier = Modifier.padding(top = 12.dp)) {
+            Column(modifier = Modifier.padding(top = 10.dp)) {
                 Text(
-                    text = "Capture Memory",
+                    text = "Explicit Memory Capture",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextWhite
                 )
                 Text(
-                    text = "USER SELECTS → MNEMO REMEMBERS. Explicitly choose what to store.",
+                    text = "USER SELECTS → MNEMO REMEMBERS. Explicit, local ingestion.",
                     fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
                     color = MintEmerald
                 )
             }
         }
 
-        // Quick Selector Modes
+        // Mode Selector Grid
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 val modes = listOf(
-                    MemoryType.PHOTO to "📷 Photo Picker",
-                    MemoryType.DOCUMENT to "📄 SAF Document",
+                    MemoryType.PHOTO to "📷 Photo",
+                    MemoryType.DOCUMENT to "📄 Doc",
                     MemoryType.VOICE to "🎙 Voice",
                     MemoryType.NOTE to "✍ Note"
                 )
@@ -96,51 +94,56 @@ fun CaptureScreen(
                     val isSel = selectedType == type
                     GlassCard(
                         modifier = Modifier.weight(1f),
+                        cornerRadius = 16.dp,
+                        paddingInside = 12.dp,
                         onClick = { selectedType = type },
-                        backgroundColor = if (isSel) ElectricViolet.copy(alpha = 0.3f) else SurfaceVariantDark,
+                        backgroundColor = if (isSel) ElectricViolet.copy(alpha = 0.25f) else CardBackgroundGlass,
                         borderColor = if (isSel) ElectricViolet else BorderGlass
                     ) {
-                        Text(
-                            text = label,
-                            fontSize = 11.sp,
-                            fontWeight = if (isSel) FontWeight.Bold else FontWeight.Normal,
-                            color = TextWhite
-                        )
+                        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = label,
+                                fontSize = 11.sp,
+                                fontWeight = if (isSel) FontWeight.Bold else FontWeight.Medium,
+                                color = if (isSel) TextWhite else TextGrayMuted
+                            )
+                        }
                     }
                 }
             }
         }
 
-        // Understanding Memory Indicator (when analyzing)
         if (isUnderstanding) {
             item {
                 GlassCard(
-                    backgroundColor = SurfaceVariantDark,
+                    cornerRadius = 18.dp,
+                    backgroundColor = CardBackgroundGlass,
                     borderColor = IndigoAccent
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "🧠 Understanding your memory...", fontSize = 13.sp, color = IndigoAccent, fontWeight = FontWeight.Bold)
+                        Text(text = "🧠 Indexing and analyzing memory content...", fontSize = 12.sp, color = IndigoAccent, fontWeight = FontWeight.Bold)
                     }
                 }
             }
         }
 
-        // Form Fields
+        // Input Form Card
         item {
             GlassCard(
-                backgroundColor = SurfaceVariantDark,
+                cornerRadius = 24.dp,
+                backgroundColor = CardBackgroundGlass,
                 borderColor = BorderGlass
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(text = "Memory Details", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    Text(text = "Memory Parameters", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = TextWhite)
 
                     OutlinedTextField(
                         value = titleText,
                         onValueChange = { titleText = it },
                         label = { Text("Memory Title", fontSize = 12.sp) },
-                        placeholder = { Text("e.g. ASUS TUF Laptop / B.Tech Certificate", fontSize = 12.sp) },
+                        placeholder = { Text("e.g. ASUS Gaming Laptop / Puducherry Trip", fontSize = 12.sp) },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(14.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = ElectricViolet,
                             unfocusedBorderColor = BorderGlass,
@@ -152,12 +155,12 @@ fun CaptureScreen(
                     OutlinedTextField(
                         value = contentText,
                         onValueChange = { contentText = it },
-                        label = { Text("Memory Description / Extracted Text", fontSize = 12.sp) },
-                        placeholder = { Text("Describe or paste content. Sensitive information will be detected automatically.", fontSize = 12.sp) },
+                        label = { Text("Memory Content / Notes / OCR Text", fontSize = 12.sp) },
+                        placeholder = { Text("Paste specs, receipt text, or notes. Sensitivity & credentials are automatically protected.", fontSize = 12.sp) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(120.dp),
-                        shape = RoundedCornerShape(12.dp),
+                            .height(130.dp),
+                        shape = RoundedCornerShape(14.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = ElectricViolet,
                             unfocusedBorderColor = BorderGlass,
@@ -171,7 +174,7 @@ fun CaptureScreen(
                         onValueChange = { tagsText = it },
                         label = { Text("Tags (comma separated)", fontSize = 12.sp) },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(14.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = ElectricViolet,
                             unfocusedBorderColor = BorderGlass,
@@ -180,7 +183,7 @@ fun CaptureScreen(
                         )
                     )
 
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
 
                     Button(
                         onClick = {
@@ -192,9 +195,9 @@ fun CaptureScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = ElectricViolet),
-                        shape = RoundedCornerShape(14.dp)
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Text("Save Memory", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                        Text("Index Memory to Local AI", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                     }
                 }
             }

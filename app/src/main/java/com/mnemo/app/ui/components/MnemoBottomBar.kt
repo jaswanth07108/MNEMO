@@ -20,8 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mnemo.app.ui.theme.BorderGlass
+import com.mnemo.app.ui.theme.BorderGlassActive
+import com.mnemo.app.ui.theme.CardBackgroundGlass
 import com.mnemo.app.ui.theme.ElectricViolet
-import com.mnemo.app.ui.theme.SurfaceGlass
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -42,11 +43,11 @@ fun MnemoBottomBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
-            .clip(RoundedCornerShape(24.dp))
-            .background(SurfaceGlass)
-            .border(1.dp, BorderGlass, RoundedCornerShape(24.dp))
-            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .clip(RoundedCornerShape(32.dp))
+            .background(CardBackgroundGlass)
+            .border(1.dp, BorderGlass, RoundedCornerShape(32.dp))
+            .padding(vertical = 6.dp, horizontal = 8.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -54,27 +55,30 @@ fun MnemoBottomBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val tabs = listOf(
-                NavTab.HOME to ("🏠" to "HOME"),
-                NavTab.MEMORIES to ("📂" to "MEMORIES"),
-                NavTab.CAPTURE to ("➕" to "CAPTURE"),
-                NavTab.ASK to ("✨" to "ASK"),
-                NavTab.VAULT to ("🔐" to "VAULT")
+                NavTab.HOME to ("🏠" to "Home"),
+                NavTab.MEMORIES to ("📂" to "Memories"),
+                NavTab.CAPTURE to ("➕" to "Capture"),
+                NavTab.ASK to ("✨" to "Ask AI"),
+                NavTab.VAULT to ("🔐" to "Vault")
             )
 
             tabs.forEach { (tab, info) ->
                 val isSelected = selectedTab == tab
-                val itemColor = if (isSelected) ElectricViolet else TextGrayMuted
+                val containerColor = if (isSelected) ElectricViolet.copy(alpha = 0.22f) else Color.Transparent
+                val borderColor = if (isSelected) BorderGlassActive else Color.Transparent
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(containerColor)
+                        .border(1.dp, borderColor, RoundedCornerShape(20.dp))
                         .clickable { onTabSelected(tab) }
-                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
                         text = info.first,
-                        fontSize = 18.sp
+                        fontSize = 17.sp
                     )
                     Text(
                         text = info.second,

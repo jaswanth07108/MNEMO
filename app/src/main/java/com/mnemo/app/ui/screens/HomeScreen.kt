@@ -39,12 +39,13 @@ import com.mnemo.app.domain.model.Memory
 import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.components.MemoryCard
 import com.mnemo.app.ui.theme.BorderGlass
+import com.mnemo.app.ui.theme.CardBackgroundGlass
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.ElectricViolet
 import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MidnightBackground
+import com.mnemo.app.ui.theme.MintEmerald
 import com.mnemo.app.ui.theme.SoftBlue
-import com.mnemo.app.ui.theme.SurfaceGlass
-import com.mnemo.app.ui.theme.SurfaceVariantDark
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -76,79 +77,98 @@ fun HomeScreen(
     ) {
         // App Header
         item {
-            Column(modifier = Modifier.padding(top = 12.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(
-                                Brush.linearGradient(
-                                    listOf(ElectricViolet, IndigoAccent, SoftBlue)
+            Column(modifier = Modifier.padding(top = 10.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(14.dp))
+                                .background(
+                                    Brush.horizontalGradient(
+                                        listOf(ElectricViolet, IndigoAccent, CyberCyan)
+                                    )
                                 )
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                        ) {
+                            Text(
+                                text = "MNEMO",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Black,
+                                color = TextWhite,
+                                letterSpacing = 1.5.sp
                             )
-                            .padding(horizontal = 10.dp, vertical = 6.dp)
-                    ) {
-                        Text(
-                            text = "MNEMO",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Black,
-                            color = TextWhite,
-                            letterSpacing = 1.sp
-                        )
-                    }
+                        }
 
-                    Spacer(modifier = Modifier.width(10.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
 
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(ElectricViolet.copy(alpha = 0.15f))
-                            .border(1.dp, ElectricViolet.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
-                            .padding(horizontal = 10.dp, vertical = 4.dp)
-                    ) {
-                        Text(
-                            text = "🛡 LOCAL-FIRST AI MEMORY",
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = ElectricViolet
-                        )
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(MintEmerald.copy(alpha = 0.12f))
+                                .border(1.dp, MintEmerald.copy(alpha = 0.35f), RoundedCornerShape(20.dp))
+                                .padding(horizontal = 10.dp, vertical = 4.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .background(MintEmerald)
+                                        .padding(3.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "LOCAL AI ONLINE",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MintEmerald
+                                )
+                            }
+                        }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "Your phone remembers what you forget.",
+                    text = "Don't remember where. Remember what.",
                     fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
                     color = TextGrayMuted
                 )
             }
         }
 
-        // Conversational Search Box Section
+        // Hero Conversational Search Section
         item {
             GlassCard(
-                backgroundColor = SurfaceVariantDark.copy(alpha = 0.8f),
-                borderColor = ElectricViolet.copy(alpha = 0.4f)
+                cornerRadius = 24.dp,
+                backgroundColor = CardBackgroundGlass,
+                borderColor = ElectricViolet.copy(alpha = 0.45f)
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(
-                        text = "What do you remember?",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextWhite
-                    )
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "✨ Ask Your Smartphone Memory",
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextWhite
+                        )
+                    }
 
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
-                        placeholder = { Text("Describe anything... (e.g. gaming laptops, certificates, beach photos)", fontSize = 12.sp, color = TextGrayMuted) },
+                        placeholder = { Text("Ask naturally... e.g., 'Find laptop I saw under ₹90,000'", fontSize = 12.sp, color = TextGrayMuted) },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = ElectricViolet,
                             unfocusedBorderColor = BorderGlass,
-                            focusedContainerColor = Color.Black.copy(alpha = 0.3f),
-                            unfocusedContainerColor = Color.Black.copy(alpha = 0.3f),
+                            focusedContainerColor = Color.Black.copy(alpha = 0.35f),
+                            unfocusedContainerColor = Color.Black.copy(alpha = 0.35f),
                             focusedTextColor = TextWhite,
                             unfocusedTextColor = TextWhite
                         ),
@@ -164,25 +184,25 @@ fun HomeScreen(
                             colors = ButtonDefaults.buttonColors(containerColor = ElectricViolet),
                             shape = RoundedCornerShape(14.dp)
                         ) {
-                            Text("Ask MNEMO ✨", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            Text("Search AI Memory", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = TextWhite)
                         }
                     }
 
-                    // Clickable Prompt Chips
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    // Clickable Sample Queries Carousel
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(sampleQueries) { q ->
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
-                                    .background(SurfaceGlass)
+                                    .background(Color.White.copy(alpha = 0.05f))
                                     .border(1.dp, BorderGlass, RoundedCornerShape(14.dp))
                                     .clickable {
                                         searchQuery = q
                                         onSearch(q)
                                     }
-                                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                                    .padding(horizontal = 12.dp, vertical = 7.dp)
                             ) {
-                                Text(text = q, fontSize = 11.sp, color = TextWhite)
+                                Text(text = q, fontSize = 11.sp, color = SoftBlue, fontWeight = FontWeight.Medium)
                             }
                         }
                     }
@@ -190,24 +210,24 @@ fun HomeScreen(
             }
         }
 
-        // Quick Capture Action Buttons
+        // Quick Ingestion Grid Buttons
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    text = "QUICK CAPTURE",
+                    text = "EXPLICIT INGESTION (PRIVACY-FIRST)",
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.2.sp
                 )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     val actions = listOf(
                         "PHOTO" to "📷 Photo",
-                        "DOCUMENT" to "📄 Document",
+                        "DOCUMENT" to "📄 SAF Doc",
                         "VOICE" to "🎙 Voice",
                         "NOTE" to "✍ Note"
                     )
@@ -215,22 +235,25 @@ fun HomeScreen(
                     actions.forEach { (type, label) ->
                         GlassCard(
                             modifier = Modifier.weight(1f),
+                            cornerRadius = 16.dp,
                             onClick = { onQuickCapture(type) },
-                            backgroundColor = SurfaceVariantDark.copy(alpha = 0.6f)
+                            backgroundColor = CardBackgroundGlass
                         ) {
-                            Text(
-                                text = label,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = TextWhite
-                            )
+                            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = label,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = TextWhite
+                                )
+                            }
                         }
                     }
                 }
             }
         }
 
-        // Recently On Your Mind Section
+        // Recently On Your Mind Pills
         item {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
@@ -238,15 +261,16 @@ fun HomeScreen(
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.2.sp
                 )
 
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(recentlyOnYourMind) { (topic, count) ->
                         GlassCard(
+                            cornerRadius = 18.dp,
                             onClick = { onTopicClick(topic) },
-                            backgroundColor = SurfaceGlass,
-                            borderColor = IndigoAccent.copy(alpha = 0.3f)
+                            backgroundColor = CardBackgroundGlass,
+                            borderColor = IndigoAccent.copy(alpha = 0.35f)
                         ) {
                             Column {
                                 Text(
@@ -258,7 +282,8 @@ fun HomeScreen(
                                 Text(
                                     text = "$count memories",
                                     fontSize = 11.sp,
-                                    color = SoftBlue
+                                    color = SoftBlue,
+                                    fontWeight = FontWeight.Medium
                                 )
                             }
                         }
@@ -267,18 +292,17 @@ fun HomeScreen(
             }
         }
 
-        // Recent Memories Header
+        // Recent Memories Feed List
         item {
             Text(
-                text = "RECENT MEMORIES (${memories.size})",
+                text = "RECENT SAVED MEMORIES (${memories.size})",
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextGrayMuted,
-                letterSpacing = 1.sp
+                letterSpacing = 1.2.sp
             )
         }
 
-        // Recent Memories Feed List
         items(memories) { memory ->
             MemoryCard(
                 memory = memory,

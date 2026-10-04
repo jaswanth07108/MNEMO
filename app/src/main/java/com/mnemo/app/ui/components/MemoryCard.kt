@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -27,12 +25,12 @@ import com.mnemo.app.domain.model.MemoryType
 import com.mnemo.app.domain.model.PrivacyLevel
 import com.mnemo.app.ui.theme.AmberWarning
 import com.mnemo.app.ui.theme.BorderGlass
+import com.mnemo.app.ui.theme.CardBackgroundGlass
 import com.mnemo.app.ui.theme.CrimsonSensitive
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.ElectricViolet
-import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MintEmerald
 import com.mnemo.app.ui.theme.SoftBlue
-import com.mnemo.app.ui.theme.SurfaceVariantDark
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -42,30 +40,24 @@ fun MemoryCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val iconEmoji = when (memory.type) {
-        MemoryType.PHOTO -> "📸"
-        MemoryType.DOCUMENT -> "📄"
-        MemoryType.VOICE -> "🎙"
-        MemoryType.NOTE -> "✍"
-        MemoryType.SCREENSHOT -> "🖼"
-        MemoryType.PRODUCT_RESEARCH -> "💻"
-    }
-
-    val privacyBadgeColor = when (memory.privacyLevel) {
-        PrivacyLevel.NORMAL -> MintEmerald.copy(alpha = 0.2f)
-        PrivacyLevel.PERSONAL -> SoftBlue.copy(alpha = 0.2f)
-        PrivacyLevel.SENSITIVE -> AmberWarning.copy(alpha = 0.2f)
-        PrivacyLevel.HIGHLY_SENSITIVE -> CrimsonSensitive.copy(alpha = 0.25f)
+    val (iconEmoji, typeLabel) = when (memory.type) {
+        MemoryType.PHOTO -> "📸" to "Photo"
+        MemoryType.DOCUMENT -> "📄" to "Document"
+        MemoryType.VOICE -> "🎙" to "Audio"
+        MemoryType.NOTE -> "✍" to "Note"
+        MemoryType.SCREENSHOT -> "🖼" to "Screenshot"
+        MemoryType.PRODUCT_RESEARCH -> "💻" to "Product Spec"
     }
 
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick,
-        backgroundColor = SurfaceVariantDark.copy(alpha = 0.7f),
+        cornerRadius = 20.dp,
+        backgroundColor = CardBackgroundGlass,
         borderColor = BorderGlass
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            // Header Row: Type Badge + Source Label + Date
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            // Header Row: Type Badge + Vault Tag + Formatted Date
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -74,30 +66,31 @@ fun MemoryCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(ElectricViolet.copy(alpha = 0.2f))
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(ElectricViolet.copy(alpha = 0.18f))
+                            .border(1.dp, ElectricViolet.copy(alpha = 0.35f), RoundedCornerShape(10.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            text = "$iconEmoji ${memory.type.name}",
-                            fontSize = 10.sp,
+                            text = "$iconEmoji $typeLabel",
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = ElectricViolet
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(6.dp))
-
                     if (memory.privacyLevel == PrivacyLevel.HIGHLY_SENSITIVE || memory.privacyLevel == PrivacyLevel.SENSITIVE) {
+                        Spacer(modifier = Modifier.width(6.dp))
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(privacyBadgeColor)
-                                .padding(horizontal = 6.dp, vertical = 4.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(CrimsonSensitive.copy(alpha = 0.2f))
+                                .border(1.dp, CrimsonSensitive.copy(alpha = 0.4f), RoundedCornerShape(10.dp))
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
                             Text(
                                 text = "🔐 VAULT",
-                                fontSize = 9.sp,
+                                fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = CrimsonSensitive
                             )
@@ -108,40 +101,43 @@ fun MemoryCard(
                 Text(
                     text = memory.formattedDate,
                     fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
                     color = TextGrayMuted
                 )
             }
 
-            // Title
+            // Memory Title
             Text(
                 text = memory.title,
-                fontSize = 15.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextWhite,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
 
-            // Content Snippet
+            // Content Excerpt
             Text(
                 text = memory.content,
-                fontSize = 12.sp,
+                fontSize = 13.sp,
                 color = TextGrayMuted,
                 maxLines = 2,
+                lineHeight = 18.sp,
                 overflow = TextOverflow.Ellipsis
             )
 
-            // Extracted Price / Parameter Tag if present
+            // Extracted Product Metadata Chip
             memory.metadata?.price?.let { price ->
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MintEmerald.copy(alpha = 0.15f))
-                        .border(1.dp, MintEmerald.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MintEmerald.copy(alpha = 0.12f))
+                        .border(1.dp, MintEmerald.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
                 ) {
                     Text(
-                        text = "Price: $price • ${memory.metadata.gpu ?: ""}",
+                        text = "🏷️ Price: $price ${if (!memory.metadata.gpu.isNull_or_empty()) "• GPU: ${memory.metadata.gpu}" else ""}",
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         color = MintEmerald
@@ -149,17 +145,26 @@ fun MemoryCard(
                 }
             }
 
-            // Location Tag if present
+            // Location Tag Pill
             memory.location?.let { loc ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = if (loc.isHighConfidence) "📍 ${loc.locationName} (High Conf)" else "📍 ${loc.locationName} (Med Conf)",
-                        fontSize = 11.sp,
-                        color = SoftBlue,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(CyberCyan.copy(alpha = 0.15f))
+                            .padding(horizontal = 8.dp, vertical = 3.dp)
+                    ) {
+                        Text(
+                            text = if (loc.isHighConfidence) "📍 EXIF Verified: ${loc.locationName}" else "📍 Visual Clue: ${loc.locationName}",
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = CyberCyan
+                        )
+                    }
                 }
             }
         }
     }
 }
+
+private fun String?.isNull_or_empty(): Boolean = this == null || this.isEmpty()

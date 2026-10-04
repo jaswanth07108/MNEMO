@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,12 +35,11 @@ import com.mnemo.app.domain.model.MemoryType
 import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.components.MemoryCard
 import com.mnemo.app.ui.theme.BorderGlass
+import com.mnemo.app.ui.theme.CardBackgroundGlass
 import com.mnemo.app.ui.theme.ElectricViolet
 import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MidnightBackground
 import com.mnemo.app.ui.theme.SoftBlue
-import com.mnemo.app.ui.theme.SurfaceGlass
-import com.mnemo.app.ui.theme.SurfaceVariantDark
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -57,7 +57,7 @@ fun MemoriesScreen(
         "DOCUMENTS" -> memories.filter { it.type == MemoryType.DOCUMENT }
         "VOICE" -> memories.filter { it.type == MemoryType.VOICE }
         "NOTES" -> memories.filter { it.type == MemoryType.NOTE }
-        "RESEARCH" -> memories.filter { it.type == MemoryType.PRODUCT_RESEARCH }
+        "SPECS" -> memories.filter { it.type == MemoryType.PRODUCT_RESEARCH }
         else -> memories
     }
 
@@ -70,15 +70,15 @@ fun MemoriesScreen(
     ) {
         // Header
         item {
-            Column(modifier = Modifier.padding(top = 12.dp)) {
+            Column(modifier = Modifier.padding(top = 10.dp)) {
                 Text(
-                    text = "Memory Vault & Capsules",
+                    text = "Memories & Capsules",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextWhite
                 )
                 Text(
-                    text = "Everything you have captured, indexed, and connected.",
+                    text = "Indexed semantic layers over screenshots, notes, docs & audio.",
                     fontSize = 12.sp,
                     color = TextGrayMuted
                 )
@@ -89,18 +89,19 @@ fun MemoriesScreen(
         item {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    text = "MEMORY CAPSULES (TOPIC COLLECTIONS)",
+                    text = "TOPIC CAPSULES",
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.2.sp
                 )
 
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(capsules) { capsule ->
                         GlassCard(
+                            cornerRadius = 20.dp,
                             onClick = { onCapsuleClick(capsule) },
-                            backgroundColor = SurfaceVariantDark,
+                            backgroundColor = CardBackgroundGlass,
                             borderColor = IndigoAccent.copy(alpha = 0.4f)
                         ) {
                             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -141,17 +142,17 @@ fun MemoriesScreen(
 
         // Memory Type Filter Chips
         item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                val filters = listOf("ALL", "PHOTOS", "DOCUMENTS", "VOICE", "NOTES", "RESEARCH")
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                val filters = listOf("ALL", "PHOTOS", "DOCUMENTS", "VOICE", "NOTES", "SPECS")
                 items(filters) { f ->
                     val isSel = selectedFilter == f
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(14.dp))
-                            .background(if (isSel) ElectricViolet else SurfaceGlass)
+                            .background(if (isSel) ElectricViolet else CardBackgroundGlass)
                             .border(1.dp, if (isSel) ElectricViolet else BorderGlass, RoundedCornerShape(14.dp))
                             .clickable { selectedFilter = f }
-                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                            .padding(horizontal = 14.dp, vertical = 7.dp)
                     ) {
                         Text(
                             text = f,
@@ -164,18 +165,18 @@ fun MemoriesScreen(
             }
         }
 
-        // Memory Feed Header
+        // Feed Header
         item {
             Text(
-                text = "MEMORIES (${filteredMemories.size})",
+                text = "INDEXED MEMORIES (${filteredMemories.size})",
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextGrayMuted,
-                letterSpacing = 1.sp
+                letterSpacing = 1.2.sp
             )
         }
 
-        // Memory Feed
+        // Memory Feed Items
         items(filteredMemories) { memory ->
             MemoryCard(
                 memory = memory,

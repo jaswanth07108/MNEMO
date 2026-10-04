@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -40,13 +39,12 @@ import com.mnemo.app.domain.model.SearchResult
 import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.components.MemoryCard
 import com.mnemo.app.ui.theme.BorderGlass
+import com.mnemo.app.ui.theme.CardBackgroundGlass
 import com.mnemo.app.ui.theme.ElectricViolet
 import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MidnightBackground
 import com.mnemo.app.ui.theme.MintEmerald
 import com.mnemo.app.ui.theme.SoftBlue
-import com.mnemo.app.ui.theme.SurfaceGlass
-import com.mnemo.app.ui.theme.SurfaceVariantDark
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -60,10 +58,9 @@ fun AskScreen(
     var queryText by remember { mutableStateOf("") }
 
     val presetQuestions = listOf(
-        "Show the laptop I was considering.",
-        "Show photos from my college trip.",
-        "Where did we take this?",
-        "Show my certificates.",
+        "Show gaming laptops around ₹90,000",
+        "Show my B.Tech degree & certificates",
+        "Where did we take Puducherry photos?",
         "What was I working on in final year?"
     )
 
@@ -72,32 +69,33 @@ fun AskScreen(
             .fillMaxSize()
             .background(MidnightBackground)
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         // Header
         item {
-            Column(modifier = Modifier.padding(top = 12.dp)) {
+            Column(modifier = Modifier.padding(top = 10.dp)) {
                 Text(
-                    text = "Ask MNEMO ✨",
+                    text = "Ask MNEMO AI ✨",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextWhite
                 )
                 Text(
-                    text = "Ask anything you remember from your personal memories.",
+                    text = "Natural language search across photos, OCR docs, voice & notes.",
                     fontSize = 12.sp,
                     color = TextGrayMuted
                 )
             }
         }
 
-        // Search Input Bar
+        // Search Box Card
         item {
             GlassCard(
-                backgroundColor = SurfaceVariantDark,
+                cornerRadius = 22.dp,
+                backgroundColor = CardBackgroundGlass,
                 borderColor = ElectricViolet.copy(alpha = 0.4f)
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     OutlinedTextField(
                         value = queryText,
                         onValueChange = { queryText = it },
@@ -119,19 +117,19 @@ fun AskScreen(
                         Button(
                             onClick = { if (queryText.isNotBlank()) onSearch(queryText) },
                             colors = ButtonDefaults.buttonColors(containerColor = ElectricViolet),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(14.dp)
                         ) {
-                            Text("Search Memories", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                            Text("Query Memory Bank", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = TextWhite)
                         }
                     }
 
-                    // Preset Questions Chips
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    // Preset Question Chips
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(presetQuestions) { pq ->
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(12.dp))
-                                    .background(SurfaceGlass)
+                                    .background(Color.White.copy(alpha = 0.05f))
                                     .border(1.dp, BorderGlass, RoundedCornerShape(12.dp))
                                     .clickable {
                                         queryText = pq
@@ -139,7 +137,7 @@ fun AskScreen(
                                     }
                                     .padding(horizontal = 10.dp, vertical = 6.dp)
                             ) {
-                                Text(text = pq, fontSize = 11.sp, color = SoftBlue)
+                                Text(text = pq, fontSize = 11.sp, color = SoftBlue, fontWeight = FontWeight.Medium)
                             }
                         }
                     }
@@ -147,23 +145,25 @@ fun AskScreen(
             }
         }
 
-        // AI Answer Card (If Result Available)
+        // AI Evidence Card
         searchResult?.let { result ->
             item {
                 GlassCard(
-                    backgroundColor = SurfaceVariantDark.copy(alpha = 0.9f),
+                    cornerRadius = 22.dp,
+                    backgroundColor = CardBackgroundGlass,
                     borderColor = MintEmerald.copy(alpha = 0.5f)
                 ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(8.dp))
-                                    .background(MintEmerald.copy(alpha = 0.2f))
+                                    .background(MintEmerald.copy(alpha = 0.18f))
+                                    .border(1.dp, MintEmerald.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
                                 Text(
-                                    text = "🤖 AI EVIDENCE ANSWER",
+                                    text = "🤖 AI EVIDENCE RESPONSE",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MintEmerald
@@ -175,7 +175,8 @@ fun AskScreen(
                             Text(
                                 text = result.confidenceText,
                                 fontSize = 10.sp,
-                                color = TextGrayMuted
+                                color = TextGrayMuted,
+                                fontWeight = FontWeight.Medium
                             )
                         }
 
@@ -184,10 +185,9 @@ fun AskScreen(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             color = TextWhite,
-                            lineHeight = 20.sp
+                            lineHeight = 22.sp
                         )
 
-                        // Compare & Show Sources Buttons
                         if (result.comparisonRows.isNotEmpty()) {
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Button(
@@ -195,7 +195,7 @@ fun AskScreen(
                                     colors = ButtonDefaults.buttonColors(containerColor = IndigoAccent),
                                     shape = RoundedCornerShape(12.dp)
                                 ) {
-                                    Text("📊 Compare Specs", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    Text("📊 Open Side-by-Side Comparison", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                                 }
                             }
                         }
@@ -203,18 +203,16 @@ fun AskScreen(
                 }
             }
 
-            // Results Section Title
             item {
                 Text(
-                    text = "RELEVANT SOURCE MEMORIES (${result.candidateMemories.size})",
+                    text = "RELEVANT GROUNDED MEMORIES (${result.candidateMemories.size})",
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.2.sp
                 )
             }
 
-            // Candidates Feed
             items(result.candidateMemories) { memory ->
                 MemoryCard(
                     memory = memory,

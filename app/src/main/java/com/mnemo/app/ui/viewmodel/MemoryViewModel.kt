@@ -11,6 +11,7 @@ import com.mnemo.app.domain.model.SearchResult
 import com.mnemo.app.domain.model.SensitiveDetectionResult
 import com.mnemo.app.domain.repository.MemorySearchRepository
 import com.mnemo.app.ui.components.NavTab
+import com.mnemo.app.utils.MemoryEnricher
 import com.mnemo.app.utils.SensitivityDetector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -122,24 +123,26 @@ class MemoryViewModel(
     fun addMemory(title: String, content: String, type: MemoryType, tags: List<String>) {
         viewModelScope.launch {
             val sensitivity = SensitivityDetector.analyzeText(content, title)
-            val newMemory = Memory(
+            val newMemory = MemoryEnricher.enrichUserMemory(
                 title = title,
                 content = content,
                 type = type,
-                privacyLevel = sensitivity.recommendedPrivacy,
-                createdAt = "2026-10-04T02:00:00Z",
-                capturedAt = "2026-10-04T02:00:00Z",
-                formattedDate = "Oct 04, 2026",
-                sourceType = "📱 User Memory Capture",
-                extractedText = content,
-                tags = tags
+                userTags = tags,
+                sourceType = when (type) {
+                    MemoryType.PHOTO -> "📷 Photo Picker Capture"
+                    MemoryType.DOCUMENT -> "📄 Storage Access Framework"
+                    MemoryType.VOICE -> "🎙 Voice Note Recording"
+                    MemoryType.NOTE -> "✍ Quick Note Entry"
+                    MemoryType.SCREENSHOT -> "📸 Screenshot Clipper"
+                    MemoryType.PRODUCT_RESEARCH -> "🛍 Product Spec Clipper"
+                }
             )
 
             if (sensitivity.isSensitive) {
                 _uiState.update { 
                     it.copy(
                         pendingSensitivity = sensitivity,
-                        pendingMemory = newMemory
+                        pendingMemory = newMemory.copy(privacyLevel = PrivacyLevel.HIGHLY_SENSITIVE)
                     ) 
                 }
             } else {

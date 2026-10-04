@@ -66,13 +66,30 @@ class MemoryRepositoryImpl(
     }
 
     override suspend fun getRecentlyOnYourMindTopics(): List<Pair<String, Int>> {
-        return listOf(
-            "💻 Gaming Laptops" to 12,
-            "🌦️ Weather Project" to 15,
-            "🎓 Final Year" to 23,
-            "🏖️ Puducherry Trip" to 18,
-            "🤖 AI / Gemini" to 8
-        )
+        val topicCounts = mutableMapOf<String, Int>()
+        for (mem in memoriesStore) {
+            for (topic in mem.topics) {
+                val icon = when {
+                    topic.contains("Laptop", ignoreCase = true) -> "💻 $topic"
+                    topic.contains("Weather", ignoreCase = true) -> "🌦️ $topic"
+                    topic.contains("Final", ignoreCase = true) -> "🎓 $topic"
+                    topic.contains("Trip", ignoreCase = true) || topic.contains("Beach", ignoreCase = true) -> "🏖️ $topic"
+                    topic.contains("Certificate", ignoreCase = true) || topic.contains("Education", ignoreCase = true) -> "📄 $topic"
+                    else -> "📌 $topic"
+                }
+                topicCounts[icon] = (topicCounts[icon] ?: 0) + 1
+            }
+        }
+        return if (topicCounts.isNotEmpty()) {
+            topicCounts.toList().sortedByDescending { it.second }
+        } else {
+            listOf(
+                "💻 Gaming Laptops" to 12,
+                "🌦️ Weather Project" to 15,
+                "🎓 Final Year" to 23,
+                "🏖️ Puducherry Trip" to 18
+            )
+        }
     }
 
     override suspend fun getVaultMemories(): List<Memory> {
