@@ -40,7 +40,7 @@ import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.components.MemoryCard
 import com.mnemo.app.ui.theme.BorderGlass
 import com.mnemo.app.ui.theme.CardBackgroundGlass
-import com.mnemo.app.ui.theme.ElectricViolet
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MidnightBackground
 import com.mnemo.app.ui.theme.MintEmerald
@@ -75,25 +75,25 @@ fun AskScreen(
         item {
             Column(modifier = Modifier.padding(top = 10.dp)) {
                 Text(
-                    text = "Ask MNEMO AI ✨",
+                    text = "⚡ Origin AI Intelligence",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextWhite
                 )
                 Text(
-                    text = "Natural language search across photos, OCR docs, voice & notes.",
+                    text = "Natural language memory retrieval powered by on-device AI.",
                     fontSize = 12.sp,
                     color = TextGrayMuted
                 )
             }
         }
 
-        // Search Box Card
+        // Origin Search Capsule
         item {
             GlassCard(
-                cornerRadius = 22.dp,
+                cornerRadius = 26.dp,
                 backgroundColor = CardBackgroundGlass,
-                borderColor = ElectricViolet.copy(alpha = 0.4f)
+                borderColor = CyberCyan.copy(alpha = 0.4f)
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     OutlinedTextField(
@@ -101,9 +101,9 @@ fun AskScreen(
                         onValueChange = { queryText = it },
                         placeholder = { Text("Ask your memory naturally...", fontSize = 12.sp, color = TextGrayMuted) },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(18.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = ElectricViolet,
+                            focusedBorderColor = CyberCyan,
                             unfocusedBorderColor = BorderGlass,
                             focusedTextColor = TextWhite,
                             unfocusedTextColor = TextWhite
@@ -116,28 +116,28 @@ fun AskScreen(
                     ) {
                         Button(
                             onClick = { if (queryText.isNotBlank()) onSearch(queryText) },
-                            colors = ButtonDefaults.buttonColors(containerColor = ElectricViolet),
-                            shape = RoundedCornerShape(14.dp)
+                            colors = ButtonDefaults.buttonColors(containerColor = CyberCyan),
+                            shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text("Query Memory Bank", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = TextWhite)
+                            Text("Query Origin AI ⚡", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.Black)
                         }
                     }
 
-                    // Preset Question Chips
+                    // Preset Atomic Chips
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(presetQuestions) { pq ->
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(12.dp))
-                                    .background(Color.White.copy(alpha = 0.05f))
-                                    .border(1.dp, BorderGlass, RoundedCornerShape(12.dp))
+                                    .background(CyberCyan.copy(alpha = 0.06f))
+                                    .border(1.dp, CyberCyan.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
                                     .clickable {
                                         queryText = pq
                                         onSearch(pq)
                                     }
                                     .padding(horizontal = 10.dp, vertical = 6.dp)
                             ) {
-                                Text(text = pq, fontSize = 11.sp, color = SoftBlue, fontWeight = FontWeight.Medium)
+                                Text(text = pq, fontSize = 11.sp, color = CyberCyan, fontWeight = FontWeight.Medium)
                             }
                         }
                     }
@@ -145,11 +145,11 @@ fun AskScreen(
             }
         }
 
-        // AI Evidence Card
+        // Origin AI Evidence Widget with Local SLM NPU Metrics
         searchResult?.let { result ->
             item {
                 GlassCard(
-                    cornerRadius = 22.dp,
+                    cornerRadius = 26.dp,
                     backgroundColor = CardBackgroundGlass,
                     borderColor = MintEmerald.copy(alpha = 0.5f)
                 ) {
@@ -157,13 +157,13 @@ fun AskScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(MintEmerald.copy(alpha = 0.18f))
-                                    .border(1.dp, MintEmerald.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(MintEmerald.copy(alpha = 0.15f))
+                                    .border(1.dp, MintEmerald.copy(alpha = 0.4f), RoundedCornerShape(10.dp))
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
                                 Text(
-                                    text = "🤖 AI EVIDENCE RESPONSE",
+                                    text = "⚡ ORIGIN SLM EVIDENCE",
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MintEmerald
@@ -180,6 +180,35 @@ fun AskScreen(
                             )
                         }
 
+                        // Local SLM NPU Benchmark Performance Chip
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(CyberCyan.copy(alpha = 0.08f))
+                                .border(1.dp, CyberCyan.copy(alpha = 0.25f), RoundedCornerShape(12.dp))
+                                .padding(horizontal = 10.dp, vertical = 6.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "🤖 ${result.llmModelName}",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = CyberCyan
+                                )
+                                Text(
+                                    text = "⚡ ${result.llmLatencyMs} ms • ${result.llmTokensPerSecond} tok/s",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MintEmerald
+                                )
+                            }
+                        }
+
                         Text(
                             text = result.answer,
                             fontSize = 14.sp,
@@ -189,14 +218,12 @@ fun AskScreen(
                         )
 
                         if (result.comparisonRows.isNotEmpty()) {
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Button(
-                                    onClick = onCompareClick,
-                                    colors = ButtonDefaults.buttonColors(containerColor = IndigoAccent),
-                                    shape = RoundedCornerShape(12.dp)
-                                ) {
-                                    Text("📊 Open Side-by-Side Comparison", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
-                                }
+                            Button(
+                                onClick = onCompareClick,
+                                colors = ButtonDefaults.buttonColors(containerColor = IndigoAccent),
+                                shape = RoundedCornerShape(14.dp)
+                            ) {
+                                Text("📊 Open Atomic Comparison", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                             }
                         }
                     }
@@ -205,11 +232,11 @@ fun AskScreen(
 
             item {
                 Text(
-                    text = "RELEVANT GROUNDED MEMORIES (${result.candidateMemories.size})",
-                    fontSize = 11.sp,
+                    text = "GROUNDED SOURCE MEMORIES (${result.candidateMemories.size})",
+                    fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.2.sp
+                    letterSpacing = 1.5.sp
                 )
             }
 

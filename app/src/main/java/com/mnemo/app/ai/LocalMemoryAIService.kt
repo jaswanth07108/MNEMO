@@ -90,44 +90,27 @@ class LocalMemoryAIService : MemoryAIService {
             }
         }
 
-        // 4. Dynamic Answer Synthesis
-        val answer = when {
-            isComparison && comparisonRows.isNotEmpty() -> {
-                "I compared ${comparisonRows.size} products from your saved memories matching your query. " +
-                        "${comparisonRows.firstOrNull()?.model ?: "Top item"} is ranked highest based on specs & TGP rating."
-            }
-            isDocQuery && topMemories.isNotEmpty() -> {
-                val names = topMemories.take(3).joinToString(", ") { it.title }
-                "Found ${topMemories.size} education documents matching your search: $names."
-            }
-            isTripQuery && topMemories.isNotEmpty() -> {
-                val loc = topMemories.firstOrNull()?.location?.locationName ?: "Puducherry"
-                "Found ${topMemories.size} memories from your trip to $loc. Grounded via GPS EXIF & travel notes."
-            }
-            isProjectQuery && topMemories.isNotEmpty() -> {
-                "Found project documentation for '${topMemories.first().title}'. Includes IoT sensor nodes, code snippets & notes."
-            }
-            topMemories.isNotEmpty() -> {
-                "Found ${topMemories.size} memories matching your description: '${topMemories.first().title}' and related items."
-            }
-            else -> "Searched your local memories for \"$query\". No exact matches found, showing recent memories."
-        }
+        // 4. Local LLM Grounded Answer Generation
+        val llmResponse = LocalLLMInferenceEngine.generateGroundedAnswer(query, topMemories)
 
         val confidenceText = when {
             topMemories.isNotEmpty() && (isLaptopQuery || isDocQuery || isTripQuery || isProjectQuery) ->
-                "High Confidence (Semantic Match across ${topMemories.size} memories)"
-            topMemories.isNotEmpty() -> "Medium Confidence (Keyword Similarity)"
+                "High Confidence (Grounding across ${topMemories.size} memories)"
+            topMemories.isNotEmpty() -> "Medium Confidence (Semantic Keyword Grounding)"
             else -> "Low Confidence (Fallback Retrieval)"
         }
 
         return SearchResult(
             query = query,
-            answer = answer,
+            answer = llmResponse.generatedText,
             confidenceText = confidenceText,
             candidateMemories = topMemories,
             sources = topMemories,
             comparisonRows = comparisonRows,
-            isComparison = isComparison
+            isComparison = isComparison,
+            llmLatencyMs = llmResponse.latencyMs,
+            llmTokensPerSecond = llmResponse.tokensPerSecond,
+            llmModelName = llmResponse.modelName
         )
     }
 
@@ -192,4 +175,3 @@ class LocalMemoryAIService : MemoryAIService {
         return map
     }
 }
-

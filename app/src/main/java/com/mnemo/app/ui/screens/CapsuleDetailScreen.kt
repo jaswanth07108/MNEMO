@@ -2,7 +2,6 @@ package com.mnemo.app.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,11 +26,10 @@ import com.mnemo.app.domain.model.MemoryCapsule
 import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.components.MemoryCard
 import com.mnemo.app.ui.theme.BorderGlass
-import com.mnemo.app.ui.theme.ElectricViolet
+import com.mnemo.app.ui.theme.CardBackgroundGlass
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MidnightBackground
-import com.mnemo.app.ui.theme.SoftBlue
-import com.mnemo.app.ui.theme.SurfaceVariantDark
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -62,19 +59,20 @@ fun CapsuleDetailScreen(
             ) {
                 Button(
                     onClick = onBack,
-                    colors = ButtonDefaults.buttonColors(containerColor = SurfaceVariantDark),
-                    shape = RoundedCornerShape(12.dp)
+                    colors = ButtonDefaults.buttonColors(containerColor = CardBackgroundGlass),
+                    shape = RoundedCornerShape(14.dp)
                 ) {
                     Text("← Back", fontSize = 12.sp, color = TextWhite)
                 }
 
-                Text("Memory Capsule", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = IndigoAccent)
+                Text("⚡ Memory Capsule", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = CyberCyan)
             }
         }
 
         item {
             GlassCard(
-                backgroundColor = SurfaceVariantDark,
+                cornerRadius = 24.dp,
+                backgroundColor = CardBackgroundGlass,
                 borderColor = IndigoAccent.copy(alpha = 0.5f)
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -90,7 +88,7 @@ fun CapsuleDetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("${capsule.memoryIds.size} total memories", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = SoftBlue)
+                        Text("${capsule.memoryIds.size} total memories", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = CyberCyan)
                         Text("${capsule.documentCount} docs • ${capsule.photoCount} photos • ${capsule.noteCount} notes", fontSize = 11.sp, color = TextGrayMuted)
                     }
                 }
@@ -101,11 +99,12 @@ fun CapsuleDetailScreen(
         if (capsule.timeline.isNotEmpty()) {
             item {
                 GlassCard(
-                    backgroundColor = SurfaceVariantDark,
+                    cornerRadius = 24.dp,
+                    backgroundColor = CardBackgroundGlass,
                     borderColor = BorderGlass
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("⏳ Timeline Journey", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = ElectricViolet)
+                        Text("⏳ Timeline Journey", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = CyberCyan)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween

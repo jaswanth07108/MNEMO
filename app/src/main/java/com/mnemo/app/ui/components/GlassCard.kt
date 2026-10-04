@@ -18,7 +18,7 @@ import com.mnemo.app.ui.theme.CardBackgroundGlass
 @Composable
 fun GlassCard(
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = 20.dp,
+    cornerRadius: Dp = 24.dp,
     paddingInside: Dp = 16.dp,
     borderColor: Color = BorderGlass,
     backgroundColor: Color = CardBackgroundGlass,

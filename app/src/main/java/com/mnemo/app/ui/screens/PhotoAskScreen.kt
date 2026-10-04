@@ -32,11 +32,11 @@ import androidx.compose.ui.unit.sp
 import com.mnemo.app.domain.model.Memory
 import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.theme.BorderGlass
-import com.mnemo.app.ui.theme.ElectricViolet
+import com.mnemo.app.ui.theme.CardBackgroundGlass
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.MidnightBackground
 import com.mnemo.app.ui.theme.MintEmerald
 import com.mnemo.app.ui.theme.SoftBlue
-import com.mnemo.app.ui.theme.SurfaceVariantDark
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
 
@@ -64,19 +64,20 @@ fun PhotoAskScreen(
             ) {
                 Button(
                     onClick = onBack,
-                    colors = ButtonDefaults.buttonColors(containerColor = SurfaceVariantDark),
-                    shape = RoundedCornerShape(12.dp)
+                    colors = ButtonDefaults.buttonColors(containerColor = CardBackgroundGlass),
+                    shape = RoundedCornerShape(14.dp)
                 ) {
                     Text("← Back", fontSize = 12.sp, color = TextWhite)
                 }
 
-                Text("📸 Photo Intelligence", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = ElectricViolet)
+                Text("⚡ Photo Intelligence", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = CyberCyan)
             }
         }
 
         item {
             GlassCard(
-                backgroundColor = SurfaceVariantDark,
+                cornerRadius = 24.dp,
+                backgroundColor = CardBackgroundGlass,
                 borderColor = BorderGlass
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -87,13 +88,13 @@ fun PhotoAskScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
+                                .clip(RoundedCornerShape(14.dp))
                                 .background(Color.Black.copy(alpha = 0.4f))
                                 .padding(12.dp)
                         ) {
                             Column {
                                 val header = if (loc.isHighConfidence) "📍 Verified Location (EXIF GPS)" else "📍 Possible Location (Visual Reasoning)"
-                                Text(header, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = SoftBlue)
+                                Text(header, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CyberCyan)
                                 Text(loc.locationName, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                                 Spacer(modifier = Modifier.height(4.dp))
                                 loc.evidenceList.forEach { ev ->
@@ -109,11 +110,12 @@ fun PhotoAskScreen(
         aiAnswer?.let { answer ->
             item {
                 GlassCard(
-                    backgroundColor = SurfaceVariantDark,
+                    cornerRadius = 24.dp,
+                    backgroundColor = CardBackgroundGlass,
                     borderColor = MintEmerald
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("🤖 AI Answer (Evidence Grounded)", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MintEmerald)
+                        Text("⚡ Origin SLM Answer (Evidence Grounded)", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MintEmerald)
                         Text(answer, fontSize = 13.sp, color = TextWhite)
                     }
                 }
@@ -122,7 +124,8 @@ fun PhotoAskScreen(
 
         item {
             GlassCard(
-                backgroundColor = SurfaceVariantDark,
+                cornerRadius = 24.dp,
+                backgroundColor = CardBackgroundGlass,
                 borderColor = BorderGlass
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -140,9 +143,10 @@ fun PhotoAskScreen(
                         OutlinedButton(
                             onClick = { aiAnswer = ans },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(14.dp),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, CyberCyan.copy(alpha = 0.4f))
                         ) {
-                            Text(q, fontSize = 12.sp, color = SoftBlue)
+                            Text(q, fontSize = 12.sp, color = CyberCyan)
                         }
                     }
                 }

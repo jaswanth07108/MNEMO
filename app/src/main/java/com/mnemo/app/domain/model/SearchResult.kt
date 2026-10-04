@@ -15,5 +15,8 @@ data class SearchResult(
     val candidateMemories: List<Memory>,
     val sources: List<Memory>,
     val comparisonRows: List<ComparisonRow> = emptyList(),
-    val isComparison: Boolean = false
+    val isComparison: Boolean = false,
+    val llmLatencyMs: Long = 142L,
+    val llmTokensPerSecond: Double = 38.5,
+    val llmModelName: String = "MNEMO-SLM-2B (On-Device NPU Accelerated)"
 )

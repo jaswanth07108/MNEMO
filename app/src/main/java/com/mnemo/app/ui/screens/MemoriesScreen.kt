@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,7 +33,7 @@ import com.mnemo.app.ui.components.GlassCard
 import com.mnemo.app.ui.components.MemoryCard
 import com.mnemo.app.ui.theme.BorderGlass
 import com.mnemo.app.ui.theme.CardBackgroundGlass
-import com.mnemo.app.ui.theme.ElectricViolet
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.IndigoAccent
 import com.mnemo.app.ui.theme.MidnightBackground
 import com.mnemo.app.ui.theme.SoftBlue
@@ -72,7 +69,7 @@ fun MemoriesScreen(
         item {
             Column(modifier = Modifier.padding(top = 10.dp)) {
                 Text(
-                    text = "Memories & Capsules",
+                    text = "⚡ Memories & Atomic Capsules",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextWhite
@@ -90,19 +87,19 @@ fun MemoriesScreen(
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
                     text = "TOPIC CAPSULES",
-                    fontSize = 11.sp,
+                    fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.2.sp
+                    letterSpacing = 1.5.sp
                 )
 
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(capsules) { capsule ->
                         GlassCard(
-                            cornerRadius = 20.dp,
+                            cornerRadius = 24.dp,
                             onClick = { onCapsuleClick(capsule) },
                             backgroundColor = CardBackgroundGlass,
-                            borderColor = IndigoAccent.copy(alpha = 0.4f)
+                            borderColor = CyberCyan.copy(alpha = 0.35f)
                         ) {
                             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                 Text(
@@ -125,7 +122,7 @@ fun MemoriesScreen(
                                         text = "${capsule.memoryIds.size} memories",
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = SoftBlue
+                                        color = CyberCyan
                                     )
                                     Text(
                                         text = "${capsule.documentCount} docs • ${capsule.photoCount} photos",
@@ -149,8 +146,8 @@ fun MemoriesScreen(
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(14.dp))
-                            .background(if (isSel) ElectricViolet else CardBackgroundGlass)
-                            .border(1.dp, if (isSel) ElectricViolet else BorderGlass, RoundedCornerShape(14.dp))
+                            .background(if (isSel) CyberCyan else CardBackgroundGlass)
+                            .border(1.dp, if (isSel) CyberCyan else BorderGlass, RoundedCornerShape(14.dp))
                             .clickable { selectedFilter = f }
                             .padding(horizontal = 14.dp, vertical = 7.dp)
                     ) {
@@ -158,7 +155,7 @@ fun MemoriesScreen(
                             text = f,
                             fontSize = 11.sp,
                             fontWeight = if (isSel) FontWeight.Bold else FontWeight.Medium,
-                            color = TextWhite
+                            color = if (isSel) Color.Black else TextWhite
                         )
                     }
                 }
@@ -169,10 +166,10 @@ fun MemoriesScreen(
         item {
             Text(
                 text = "INDEXED MEMORIES (${filteredMemories.size})",
-                fontSize = 11.sp,
+                fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextGrayMuted,
-                letterSpacing = 1.2.sp
+                letterSpacing = 1.5.sp
             )
         }
 

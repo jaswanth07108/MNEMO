@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +32,7 @@ import com.mnemo.app.ui.theme.AmberWarning
 import com.mnemo.app.ui.theme.BorderGlass
 import com.mnemo.app.ui.theme.CardBackgroundGlass
 import com.mnemo.app.ui.theme.CrimsonSensitive
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.MidnightBackground
 import com.mnemo.app.ui.theme.MintEmerald
 import com.mnemo.app.ui.theme.SoftBlue
@@ -52,38 +54,38 @@ fun VaultScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
-        // Header
+        // Origin Atomic Vault Header
         item {
             Column(modifier = Modifier.padding(top = 10.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(CrimsonSensitive.copy(alpha = 0.18f))
-                            .border(1.dp, CrimsonSensitive.copy(alpha = 0.4f), RoundedCornerShape(10.dp))
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(CrimsonSensitive.copy(alpha = 0.15f))
+                            .border(1.dp, CrimsonSensitive.copy(alpha = 0.4f), RoundedCornerShape(12.dp))
                             .padding(horizontal = 10.dp, vertical = 5.dp)
                     ) {
-                        Text(text = "🔐 BIOMETRIC VAULT", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonSensitive)
+                        Text(text = "🔐 ORIGIN ATOMIC VAULT", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonSensitive, letterSpacing = 0.5.sp)
                     }
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "Encrypted local vault for IDs, passwords, bank memos & sensitive documents.",
+                    text = "Encrypted on-device storage for IDs, credentials & sensitive data.",
                     fontSize = 12.sp,
                     color = TextGrayMuted
                 )
             }
         }
 
-        // Sensitivity Classification Legend
+        // Sensitivity Classification
         item {
             GlassCard(
-                cornerRadius = 20.dp,
+                cornerRadius = 24.dp,
                 backgroundColor = CardBackgroundGlass,
                 borderColor = BorderGlass
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(text = "Sensitivity Matrix", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                    Text(text = "Origin Sensitivity Matrix", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -91,17 +93,17 @@ fun VaultScreen(
                         Text(text = "🟢 Normal", fontSize = 11.sp, color = MintEmerald)
                         Text(text = "🔵 Personal", fontSize = 11.sp, color = SoftBlue)
                         Text(text = "🟠 Sensitive", fontSize = 11.sp, color = AmberWarning)
-                        Text(text = "🔴 Highly Sensitive", fontSize = 11.sp, color = CrimsonSensitive, fontWeight = FontWeight.Bold)
+                        Text(text = "🔴 Critical", fontSize = 11.sp, color = CrimsonSensitive, fontWeight = FontWeight.Bold)
                     }
                 }
             }
         }
 
-        // Vault Lock / Unlock Status Card
+        // Vault Lock / Unlock State
         if (!isUnlocked) {
             item {
                 GlassCard(
-                    cornerRadius = 24.dp,
+                    cornerRadius = 28.dp,
                     backgroundColor = CardBackgroundGlass,
                     borderColor = CrimsonSensitive.copy(alpha = 0.5f)
                 ) {
@@ -110,21 +112,21 @@ fun VaultScreen(
                         verticalArrangement = Arrangement.spacedBy(14.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 16.dp)
+                            .padding(vertical = 20.dp)
                     ) {
-                        Text(text = "🛡️", fontSize = 48.sp)
-                        Text(text = "Vault is Encrypted & Locked", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                        Text(text = "🛡️", fontSize = 52.sp)
+                        Text(text = "Atomic Vault Encrypted", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                         Text(
-                            text = "Biometric authentication or Device PIN required to view sensitive evidence.",
+                            text = "Biometric authentication required to access sensitive evidence.",
                             fontSize = 12.sp,
                             color = TextGrayMuted
                         )
                         Button(
                             onClick = onUnlock,
                             colors = ButtonDefaults.buttonColors(containerColor = CrimsonSensitive),
-                            shape = RoundedCornerShape(14.dp)
+                            shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text("Authenticate & Unlock Vault 🔓", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = TextWhite)
+                            Text("Authenticate & Unlock 🔓", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = TextWhite)
                         }
                     }
                 }
@@ -136,11 +138,11 @@ fun VaultScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "UNLOCKED VAULT MEMORIES (${vaultMemories.size})", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonSensitive, letterSpacing = 1.2.sp)
+                    Text(text = "UNLOCKED VAULT (${vaultMemories.size})", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = CrimsonSensitive, letterSpacing = 1.5.sp)
                     Button(
                         onClick = onLock,
                         colors = ButtonDefaults.buttonColors(containerColor = CardBackgroundGlass),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(14.dp)
                     ) {
                         Text("Lock Vault 🔒", fontSize = 11.sp, color = TextWhite)
                     }

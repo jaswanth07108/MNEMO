@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.mnemo.app.ui.theme.BorderGlass
 import com.mnemo.app.ui.theme.BorderGlassActive
 import com.mnemo.app.ui.theme.CardBackgroundGlass
+import com.mnemo.app.ui.theme.CyberCyan
 import com.mnemo.app.ui.theme.ElectricViolet
 import com.mnemo.app.ui.theme.TextGrayMuted
 import com.mnemo.app.ui.theme.TextWhite
@@ -43,11 +44,11 @@ fun MnemoBottomBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 10.dp)
-            .clip(RoundedCornerShape(32.dp))
+            .padding(horizontal = 14.dp, vertical = 8.dp)
+            .clip(RoundedCornerShape(36.dp))
             .background(CardBackgroundGlass)
-            .border(1.dp, BorderGlass, RoundedCornerShape(32.dp))
-            .padding(vertical = 6.dp, horizontal = 8.dp)
+            .border(1.dp, BorderGlass, RoundedCornerShape(36.dp))
+            .padding(vertical = 6.dp, horizontal = 6.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -56,23 +57,23 @@ fun MnemoBottomBar(
         ) {
             val tabs = listOf(
                 NavTab.HOME to ("🏠" to "Home"),
-                NavTab.MEMORIES to ("📂" to "Memories"),
-                NavTab.CAPTURE to ("➕" to "Capture"),
-                NavTab.ASK to ("✨" to "Ask AI"),
+                NavTab.MEMORIES to ("📂" to "Index"),
+                NavTab.CAPTURE to ("⚡" to "Capture"),
+                NavTab.ASK to ("✨" to "Origin AI"),
                 NavTab.VAULT to ("🔐" to "Vault")
             )
 
             tabs.forEach { (tab, info) ->
                 val isSelected = selectedTab == tab
-                val containerColor = if (isSelected) ElectricViolet.copy(alpha = 0.22f) else Color.Transparent
+                val containerColor = if (isSelected) CyberCyan.copy(alpha = 0.18f) else Color.Transparent
                 val borderColor = if (isSelected) BorderGlassActive else Color.Transparent
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(22.dp))
                         .background(containerColor)
-                        .border(1.dp, borderColor, RoundedCornerShape(20.dp))
+                        .border(1.dp, borderColor, RoundedCornerShape(22.dp))
                         .clickable { onTabSelected(tab) }
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
@@ -82,9 +83,10 @@ fun MnemoBottomBar(
                     )
                     Text(
                         text = info.second,
-                        fontSize = 10.sp,
+                        fontSize = 9.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                        color = if (isSelected) TextWhite else TextGrayMuted
+                        color = if (isSelected) CyberCyan else TextGrayMuted,
+                        letterSpacing = 0.5.sp
                     )
                 }
             }

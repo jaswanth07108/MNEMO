@@ -75,7 +75,7 @@ fun HomeScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        // App Header
+        // OriginOS Atomic Header
         item {
             Column(modifier = Modifier.padding(top = 10.dp)) {
                 Row(
@@ -89,42 +89,44 @@ fun HomeScreen(
                                 .clip(RoundedCornerShape(14.dp))
                                 .background(
                                     Brush.horizontalGradient(
-                                        listOf(ElectricViolet, IndigoAccent, CyberCyan)
+                                        listOf(CyberCyan, IndigoAccent, SoftBlue)
                                     )
                                 )
-                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                                .padding(horizontal = 14.dp, vertical = 7.dp)
                         ) {
                             Text(
                                 text = "MNEMO",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Black,
-                                color = TextWhite,
-                                letterSpacing = 1.5.sp
+                                color = Color.Black,
+                                letterSpacing = 2.sp
                             )
                         }
 
                         Spacer(modifier = Modifier.width(10.dp))
 
+                        // OriginOS NPU Status Badge
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(20.dp))
-                                .background(MintEmerald.copy(alpha = 0.12f))
-                                .border(1.dp, MintEmerald.copy(alpha = 0.35f), RoundedCornerShape(20.dp))
+                                .background(CyberCyan.copy(alpha = 0.1f))
+                                .border(1.dp, CyberCyan.copy(alpha = 0.35f), RoundedCornerShape(20.dp))
                                 .padding(horizontal = 10.dp, vertical = 4.dp)
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Box(
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(4.dp))
-                                        .background(MintEmerald)
+                                        .background(CyberCyan)
                                         .padding(3.dp)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "LOCAL AI ONLINE",
-                                    fontSize = 10.sp,
+                                    text = "⚡ ORIGIN AI • NPU",
+                                    fontSize = 9.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MintEmerald
+                                    color = CyberCyan,
+                                    letterSpacing = 0.5.sp
                                 )
                             }
                         }
@@ -141,31 +143,29 @@ fun HomeScreen(
             }
         }
 
-        // Hero Conversational Search Section
+        // Origin Atomic Search Capsule
         item {
             GlassCard(
-                cornerRadius = 24.dp,
+                cornerRadius = 28.dp,
                 backgroundColor = CardBackgroundGlass,
-                borderColor = ElectricViolet.copy(alpha = 0.45f)
+                borderColor = CyberCyan.copy(alpha = 0.4f)
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "✨ Ask Your Smartphone Memory",
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextWhite
-                        )
-                    }
+                    Text(
+                        text = "✨ Origin Memory Intelligence",
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextWhite
+                    )
 
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
-                        placeholder = { Text("Ask naturally... e.g., 'Find laptop I saw under ₹90,000'", fontSize = 12.sp, color = TextGrayMuted) },
+                        placeholder = { Text("Ask naturally... e.g., 'Find laptop under ₹90,000'", fontSize = 12.sp, color = TextGrayMuted) },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(18.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = ElectricViolet,
+                            focusedBorderColor = CyberCyan,
                             unfocusedBorderColor = BorderGlass,
                             focusedContainerColor = Color.Black.copy(alpha = 0.35f),
                             unfocusedContainerColor = Color.Black.copy(alpha = 0.35f),
@@ -181,28 +181,28 @@ fun HomeScreen(
                     ) {
                         Button(
                             onClick = { if (searchQuery.isNotBlank()) onSearch(searchQuery) },
-                            colors = ButtonDefaults.buttonColors(containerColor = ElectricViolet),
-                            shape = RoundedCornerShape(14.dp)
+                            colors = ButtonDefaults.buttonColors(containerColor = CyberCyan),
+                            shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text("Search AI Memory", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = TextWhite)
+                            Text("Search Origin AI ⚡", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.Black)
                         }
                     }
 
-                    // Clickable Sample Queries Carousel
+                    // Atomic Prompt Chips
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(sampleQueries) { q ->
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
-                                    .background(Color.White.copy(alpha = 0.05f))
-                                    .border(1.dp, BorderGlass, RoundedCornerShape(14.dp))
+                                    .background(CyberCyan.copy(alpha = 0.06f))
+                                    .border(1.dp, CyberCyan.copy(alpha = 0.2f), RoundedCornerShape(14.dp))
                                     .clickable {
                                         searchQuery = q
                                         onSearch(q)
                                     }
                                     .padding(horizontal = 12.dp, vertical = 7.dp)
                             ) {
-                                Text(text = q, fontSize = 11.sp, color = SoftBlue, fontWeight = FontWeight.Medium)
+                                Text(text = q, fontSize = 11.sp, color = CyberCyan, fontWeight = FontWeight.Medium)
                             }
                         }
                     }
@@ -210,15 +210,15 @@ fun HomeScreen(
             }
         }
 
-        // Quick Ingestion Grid Buttons
+        // Origin Atomic Capture Grid
         item {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    text = "EXPLICIT INGESTION (PRIVACY-FIRST)",
-                    fontSize = 11.sp,
+                    text = "ATOMIC CAPTURE (PRIVACY-FIRST)",
+                    fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.2.sp
+                    letterSpacing = 1.5.sp
                 )
 
                 Row(
@@ -227,7 +227,7 @@ fun HomeScreen(
                 ) {
                     val actions = listOf(
                         "PHOTO" to "📷 Photo",
-                        "DOCUMENT" to "📄 SAF Doc",
+                        "DOCUMENT" to "📄 SAF",
                         "VOICE" to "🎙 Voice",
                         "NOTE" to "✍ Note"
                     )
@@ -235,9 +235,11 @@ fun HomeScreen(
                     actions.forEach { (type, label) ->
                         GlassCard(
                             modifier = Modifier.weight(1f),
-                            cornerRadius = 16.dp,
+                            cornerRadius = 18.dp,
+                            paddingInside = 12.dp,
                             onClick = { onQuickCapture(type) },
-                            backgroundColor = CardBackgroundGlass
+                            backgroundColor = CardBackgroundGlass,
+                            borderColor = CyberCyan.copy(alpha = 0.15f)
                         ) {
                             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
                                 Text(
@@ -253,21 +255,21 @@ fun HomeScreen(
             }
         }
 
-        // Recently On Your Mind Pills
+        // Origin Atomic Topic Widgets
         item {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
                     text = "RECENTLY ON YOUR MIND",
-                    fontSize = 11.sp,
+                    fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextGrayMuted,
-                    letterSpacing = 1.2.sp
+                    letterSpacing = 1.5.sp
                 )
 
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(recentlyOnYourMind) { (topic, count) ->
                         GlassCard(
-                            cornerRadius = 18.dp,
+                            cornerRadius = 20.dp,
                             onClick = { onTopicClick(topic) },
                             backgroundColor = CardBackgroundGlass,
                             borderColor = IndigoAccent.copy(alpha = 0.35f)
@@ -282,7 +284,7 @@ fun HomeScreen(
                                 Text(
                                     text = "$count memories",
                                     fontSize = 11.sp,
-                                    color = SoftBlue,
+                                    color = CyberCyan,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
@@ -292,14 +294,14 @@ fun HomeScreen(
             }
         }
 
-        // Recent Memories Feed List
+        // Atomic Memories Feed
         item {
             Text(
-                text = "RECENT SAVED MEMORIES (${memories.size})",
-                fontSize = 11.sp,
+                text = "ATOMIC MEMORY FEED (${memories.size})",
+                fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextGrayMuted,
-                letterSpacing = 1.2.sp
+                letterSpacing = 1.5.sp
             )
         }
 
